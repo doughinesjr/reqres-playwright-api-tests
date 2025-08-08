@@ -77,3 +77,5 @@ To view the test report:
 3. In the "Artifacts" section, under the job steps, find the artifact named **playwright-report**.
 4. Download and unzip the artifact (Using download button to the right).
 5. Open the `index.html` file inside the `playwright-report` folder in your browser.
+
+Expected results for tests: 14 passed, 10 failed, 2 skipped

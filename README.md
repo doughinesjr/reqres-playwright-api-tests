@@ -1,6 +1,6 @@
 # Reqres Playwright API Tests
 
-This repository contains API tests for the [Reqres](https://reqres.in/) public API using [Playwright](https://playwright.dev/docs/test-api-testing).
+This repository contains API tests for the [Reqres](https://reqres.in/) public API using [Playwright](https://playwright.dev/docs/test-api-testing). The tests can be run both on Github and locally.
 
 ## Table of Contents
 

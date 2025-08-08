@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { USER_MANAGEMENT_PATH } from "../helpers/apiLocations";
 
 test.describe('Delete user (DELETE)', () => {
   test("Should return acknowledgement successfully", async ({ request }) => {
@@ -35,7 +36,7 @@ test.describe('Delete user (DELETE)', () => {
   test("Should fail if missing required fields (No ID included)", async ({ request }) => {
 
     // Send request with no ID
-    const response = await request.delete(`/api/users/`); 
+    const response = await request.delete(USER_MANAGEMENT_PATH); 
     
     expect(response.status()).toBe(404);
   });
@@ -50,7 +51,7 @@ test.describe('Delete user (DELETE)', () => {
 
     // Verify User has been deleted (via GET users endpoint);
 
-    const responseFromGet = await request.get(`/api/users/`, {
+    const responseFromGet = await request.get(USER_MANAGEMENT_PATH, {
       params: {
         'per_page': 100
       }

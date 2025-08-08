@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { validateSchema } from "../helpers/validateSchema";
+import { USER_MANAGEMENT_PATH } from "../helpers/apiLocations";
 
 const schema = require("../schemas/createUserResponse.json");
 
@@ -8,7 +9,7 @@ test.describe('Create new user (POST)', () => {
     const emailAddress = "automationTest@gmail.com";
     const startTime = Date.now();
 
-    const response = await request.post(`/api/users/`, {
+    const response = await request.post(USER_MANAGEMENT_PATH, {
       data: {
         'email': emailAddress
       }
@@ -29,7 +30,7 @@ test.describe('Create new user (POST)', () => {
   test("Should fail if no API key is given", async ({ request }) => {
     const emailAddress = "automationTest@gmail.com";
 
-    const response = await request.post(`/api/users/`, {
+    const response = await request.post(USER_MANAGEMENT_PATH, {
       data: {
         'email': emailAddress
       },
@@ -43,7 +44,7 @@ test.describe('Create new user (POST)', () => {
 
   test("Should fail if invalid JSON format", async ({ request }) => {
 
-    const response = await request.post(`/api/users/`, {
+    const response = await request.post(USER_MANAGEMENT_PATH, {
       data: "kdsljflsdaklfjksaf"
     });
 
@@ -55,7 +56,7 @@ test.describe('Create new user (POST)', () => {
   test("Should pass if additional fields are passed", async ({ request }) => {
     const emailAddress = "automationTest@gmail.com";
 
-    const response = await request.post(`/api/users/`, {
+    const response = await request.post(USER_MANAGEMENT_PATH, {
       data: {
         'email': emailAddress,
         'additionalField1': 'additional value 1'
@@ -73,7 +74,7 @@ test.describe('Create new user (POST)', () => {
     const emailAddress = 'automationTest@gmail.com';
     const startTime = Date.now();
 
-    const response = await request.post(`/api/users/`, {
+    const response = await request.post(USER_MANAGEMENT_PATH, {
       data: {
         'email': emailAddress
       }
@@ -88,7 +89,7 @@ test.describe('Create new user (POST)', () => {
 
     // Verify User has been created
 
-    const responseFromGet = await request.get(`/api/users/`, {
+    const responseFromGet = await request.get(USER_MANAGEMENT_PATH, {
       params: {
         'per_page': 100
       }

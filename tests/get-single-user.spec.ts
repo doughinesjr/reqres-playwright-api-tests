@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { validateSchema } from "../helpers/validateSchema";
+import { USER_MANAGEMENT_PATH } from "../helpers/apiLocations";
 
 const schema = require("../schemas/userSchemaSingle.json");
 
@@ -8,7 +9,7 @@ test.describe('Get single user (GET)', () => {
     const startTime = Date.now();
     const id = 3;
 
-    const userList = await request.get(`/api/users/${id}`);
+    const userList = await request.get(`${USER_MANAGEMENT_PATH}/${id}`);
     const responseTime = Date.now() - startTime;
     
     const responseJson = await userList.json();
@@ -23,13 +24,13 @@ test.describe('Get single user (GET)', () => {
   });
 
  test("Should fail if user ID is not found", async ({ request }) => {
-    const userList = await request.get('/api/users/33848483284');
+    const userList = await request.get('${USER_MANAGEMENT_PATH}/33848483284');
 
     expect(userList.status()).toBe(404);
   });
 
   test("Should fail with 400 status code if user ID is not in the correct format", async ({ request }) => {
-    const userList = await request.get(`/api/users/abcd`);
+    const userList = await request.get(`${USER_MANAGEMENT_PATH}/abcd`);
 
     expect(userList.status()).toBe(400);
   });

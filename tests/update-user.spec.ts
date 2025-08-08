@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { validateSchema } from "../helpers/validateSchema";
+import { USER_MANAGEMENT_PATH } from "../helpers/apiLocations";
 
 const schema = require("../schemas/createUserResponse.json");
 
@@ -11,7 +12,7 @@ test.describe('Update user (PUT)', () => {
 
     const startTime = Date.now();
 
-    const response = await request.put(`/api/users/3`, {
+    const response = await request.put(`${USER_MANAGEMENT_PATH}/3`, {
       data: {
         'email': emailAddress,
         'first_name': firstName,
@@ -33,7 +34,7 @@ test.describe('Update user (PUT)', () => {
 
   test("Should fail if user ID doesn't exist", async ({ request }) => {
 
-    const response = await request.put(`/api/users/58585858`, {
+    const response = await request.put(`${USER_MANAGEMENT_PATH}/58585858`, {
       data: {
         'email': 'test@test.com',
         'first_name': 'newFirstName',
@@ -46,7 +47,7 @@ test.describe('Update user (PUT)', () => {
   test.skip("Should fail if invalid JSON format", async ({ request }) => {});
 
   test("Should fail if missing required fields", async ({ request }) => {
-    const response = await request.put(`/api/users/3`, {
+    const response = await request.put(`${USER_MANAGEMENT_PATH}/3`, {
       data: {}
     });
 
@@ -54,7 +55,7 @@ test.describe('Update user (PUT)', () => {
   });
 
   test("Should pass if additional fields are passed", async ({ request }) => {
-    const response = await request.put(`/api/users/3`, {
+    const response = await request.put(`${USER_MANAGEMENT_PATH}/3`, {
       data: {
         'email': 'test@test.com',
         'first_name': 'newFirstName',
@@ -69,7 +70,7 @@ test.describe('Update user (PUT)', () => {
     const emailAddress = 'automationTest@gmail.com';
     const startTime = Date.now();
 
-    const response = await request.post(`/api/users/`, {
+    const response = await request.post(`${USER_MANAGEMENT_PATH}/3`, {
       data: {
         'email': emailAddress
       }
@@ -85,7 +86,7 @@ test.describe('Update user (PUT)', () => {
 
     // Verify User has been created via GET
 
-    const responseFromGet = await request.get(`/api/users/`, {
+    const responseFromGet = await request.get(USER_MANAGEMENT_PATH, {
       params: {
         'per_page': 100
       }

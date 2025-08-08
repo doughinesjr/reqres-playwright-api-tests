@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { validateSchema } from "../helpers/validateSchema";
+import { USER_MANAGEMENT_PATH } from "../helpers/apiLocations";
 
 const schema = require("../schemas/userSchemaFull.json");
 
@@ -7,7 +8,7 @@ test.describe('Get all users (GET)', () => {
   test("Should return successfully", async ({ request }) => {
     const startTime = Date.now();
 
-    const userList = await request.get("/api/users");
+    const userList = await request.get(USER_MANAGEMENT_PATH);
     const responseTime = Date.now() - startTime;
 
     expect(userList.status()).toBe(200);
@@ -19,7 +20,7 @@ test.describe('Get all users (GET)', () => {
 
   test("Should return successfully if page number is given", async ({ request }) => {
     const startTime = Date.now();
-    const userList = await request.get("/api/users", {
+    const userList = await request.get(USER_MANAGEMENT_PATH, {
       params: {
         'page':2 
       }
@@ -35,7 +36,7 @@ test.describe('Get all users (GET)', () => {
   });
 
   test("Should not return any users if page number is too large", async ({ request }) => {
-    const userList = await request.get("/api/users", {
+    const userList = await request.get(USER_MANAGEMENT_PATH, {
       params: {
         'page':5 
       }
@@ -50,7 +51,7 @@ test.describe('Get all users (GET)', () => {
   });
 
   test("Should return first page if page value is in the wrong format", async ({ request }) => {
-    const userList = await request.get("/api/users", {
+    const userList = await request.get(USER_MANAGEMENT_PATH, {
       params: {
         'page':'abc'
       }
@@ -64,7 +65,7 @@ test.describe('Get all users (GET)', () => {
   });
 
   test("Should return the specified amount of results per page", async ({ request }) => {
-    const userList = await request.get("/api/users", {
+    const userList = await request.get(USER_MANAGEMENT_PATH, {
       params: {
         'per_page': 4
       }
@@ -80,7 +81,7 @@ test.describe('Get all users (GET)', () => {
   });
 
   test("Should return first page if per page value is in the wrong format", async ({ request }) => {
-     const userList = await request.get("/api/users", {
+     const userList = await request.get(USER_MANAGEMENT_PATH, {
       params: {
         'per_page': 'fasfjlks'
       }

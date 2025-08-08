@@ -15,20 +15,22 @@ This repository contains API tests for the [Reqres](https://reqres.in/) public A
 ## Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/doughinesjr/reqres-playwright-api-tests.git
-   cd reqres-playwright-api-tests
-   ```
+
+    ```bash
+    git clone https://github.com/doughinesjr/reqres-playwright-api-tests.git
+    cd reqres-playwright-api-tests
+    ```
 
 2. Install dependencies:
-   ```bash
-   npm install
-   ```
+
+    ```bash
+    npm install
+    ```
 
 3. Create a `.env` file in the root directory with the following line, including your ReqRes API Key. If you don't have a ReqRes API Key, you can get one from ReqRes [here](https://reqres.in/signup).
-   ```
-   API_KEY=<reqres_api_key_here>
-   ```
+    ```
+    API_KEY=<reqres_api_key_here>
+    ```
 
 ---
 
@@ -47,14 +49,17 @@ To run all tests via Github Actions:
 The run should show on the page within 10-20 seconds. Click [here](#viewing-test-reports) to learn how to open reports through Github.
 
 ---
+
 ## Running Tests Locally
 
 To run all tests:
+
 ```bash
 npm test
 ```
 
 After running tests in the command line, you will see a report in the command line. You can also view an HTML report using the following command. This will serve an HTML report on your local host, and load the report in your web browser. You'll need to Press Ctrl+C on the command line to continue using your command line.
+
 ```bash
 npm run report
 ```

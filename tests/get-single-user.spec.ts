@@ -1,37 +1,42 @@
-import { test, expect } from "@playwright/test";
-import { validateSchema } from "../helpers/validateSchema";
-import { USER_MANAGEMENT_PATH } from "../helpers/apiLocations";
-import { userSchemaSingle } from "../schemas/userSchemaSingle";
+import { test, expect } from '@playwright/test';
+import { validateSchema } from '../helpers/validateSchema';
+import { USER_MANAGEMENT_PATH } from '../helpers/apiLocations';
+import { userSchemaSingle } from '../schemas/userSchemaSingle';
 
 test.describe('Get single user (GET)', () => {
-  test("Should return successfully", async ({ request }) => {
-    const startTime = Date.now();
-    const id = 3;
+    test('Should return successfully', async ({ request }) => {
+        const startTime = Date.now();
+        const id = 3;
 
-    const userList = await request.get(`${USER_MANAGEMENT_PATH}/${id}`);
-    const responseTime = Date.now() - startTime;
-    
-    const responseJson = await userList.json();
+        const userList = await request.get(`${USER_MANAGEMENT_PATH}/${id}`);
+        const responseTime = Date.now() - startTime;
 
-    expect(userList.status()).toBe(200);
-    expect(responseTime).toBeLessThanOrEqual(1000);
-    expect(responseJson.data.id).toBe(id);
-    expect(responseJson.data.first_name).toBe("Emma");
-    expect(responseJson.data.last_name).toBe("Wong");
-    expect(responseJson.data.avatar).toBe(`https://reqres.in/img/faces/${id}-image.jpg`);
-    validateSchema(responseJson, userSchemaSingle);
-  });
+        const responseJson = await userList.json();
 
- test("Should fail if user ID is not found", async ({ request }) => {
-    const userList = await request.get('${USER_MANAGEMENT_PATH}/33848483284');
+        expect(userList.status()).toBe(200);
+        expect(responseTime).toBeLessThanOrEqual(1000);
+        expect(responseJson.data.id).toBe(id);
+        expect(responseJson.data.first_name).toBe('Emma');
+        expect(responseJson.data.last_name).toBe('Wong');
+        expect(responseJson.data.avatar).toBe(
+            `https://reqres.in/img/faces/${id}-image.jpg`
+        );
+        validateSchema(responseJson, userSchemaSingle);
+    });
 
-    expect(userList.status()).toBe(404);
-  });
+    test('Should fail if user ID is not found', async ({ request }) => {
+        const userList = await request.get(
+            '${USER_MANAGEMENT_PATH}/33848483284'
+        );
 
-  test("Should fail with 400 status code if user ID is not in the correct format", async ({ request }) => {
-    const userList = await request.get(`${USER_MANAGEMENT_PATH}/abcd`);
+        expect(userList.status()).toBe(404);
+    });
 
-    expect(userList.status()).toBe(400);
-  });
-  
+    test('Should fail with 400 status code if user ID is not in the correct format', async ({
+        request,
+    }) => {
+        const userList = await request.get(`${USER_MANAGEMENT_PATH}/abcd`);
+
+        expect(userList.status()).toBe(400);
+    });
 });

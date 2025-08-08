@@ -1,23 +1,19 @@
-import { JSONSchemaType } from "ajv";
-import { CreateUserResponse } from "../types/user";
+import { JSONSchemaType } from 'ajv';
+import { CreateUserResponse } from '../types/user';
 
 export const createUserResponseSchema: JSONSchemaType<CreateUserResponse> = {
-  "type": "object",
-  "properties": {
-    "email": {
-      "type": "string"
+    type: 'object',
+    properties: {
+        email: {
+            type: 'string',
+        },
+        id: {
+            type: 'string',
+        },
+        createdAt: {
+            type: 'string',
+            format: 'date-time',
+        },
     },
-    "id": {
-      "type": "string"
-    },
-    "createdAt": {
-      "type": "string",
-      "format": "date-time"
-    }
-  },
-  "required": [
-    "email",
-    "id",
-    "createdAt"
-  ]
-}
+    required: ['email', 'id', 'createdAt'],
+};

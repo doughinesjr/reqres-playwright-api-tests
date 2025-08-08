@@ -1,95 +1,104 @@
-import { test, expect } from "@playwright/test";
-import { validateSchema } from "../helpers/validateSchema";
-import { USER_MANAGEMENT_PATH } from "../helpers/apiLocations";
-import { userSchemaFull } from "../schemas/userSchemaFull";
+import { test, expect } from '@playwright/test';
+import { validateSchema } from '../helpers/validateSchema';
+import { USER_MANAGEMENT_PATH } from '../helpers/apiLocations';
+import { userSchemaFull } from '../schemas/userSchemaFull';
 
 test.describe('Get all users (GET)', () => {
-  test("Should return successfully", async ({ request }) => {
-    const startTime = Date.now();
+    test('Should return successfully', async ({ request }) => {
+        const startTime = Date.now();
 
-    const userList = await request.get(USER_MANAGEMENT_PATH);
-    const responseTime = Date.now() - startTime;
+        const userList = await request.get(USER_MANAGEMENT_PATH);
+        const responseTime = Date.now() - startTime;
 
-    expect(userList.status()).toBe(200);
+        expect(userList.status()).toBe(200);
 
-    validateSchema(await userList.json(), userSchemaFull);
+        validateSchema(await userList.json(), userSchemaFull);
 
-    expect(responseTime).toBeLessThanOrEqual(1000);
-  });
-
-  test("Should return successfully if page number is given", async ({ request }) => {
-    const startTime = Date.now();
-    const userList = await request.get(USER_MANAGEMENT_PATH, {
-      params: {
-        'page':2 
-      }
+        expect(responseTime).toBeLessThanOrEqual(1000);
     });
-    const responseTime = Date.now() - startTime;
-    const responseJson = await userList.json();
 
-    expect(userList.status()).toBe(200);
-    expect(responseJson.page).toBe(2);
+    test('Should return successfully if page number is given', async ({
+        request,
+    }) => {
+        const startTime = Date.now();
+        const userList = await request.get(USER_MANAGEMENT_PATH, {
+            params: {
+                page: 2,
+            },
+        });
+        const responseTime = Date.now() - startTime;
+        const responseJson = await userList.json();
 
-    validateSchema(await responseJson, userSchemaFull);
-    expect(responseTime).toBeLessThanOrEqual(1000);
-  });
+        expect(userList.status()).toBe(200);
+        expect(responseJson.page).toBe(2);
 
-  test("Should not return any users if page number is too large", async ({ request }) => {
-    const userList = await request.get(USER_MANAGEMENT_PATH, {
-      params: {
-        'page':5 
-      }
+        validateSchema(await responseJson, userSchemaFull);
+        expect(responseTime).toBeLessThanOrEqual(1000);
     });
-    const responseJson = await userList.json();
-    
-    expect(userList.status()).toBe(200);
 
-    expect(responseJson.data).toEqual([]);
+    test('Should not return any users if page number is too large', async ({
+        request,
+    }) => {
+        const userList = await request.get(USER_MANAGEMENT_PATH, {
+            params: {
+                page: 5,
+            },
+        });
+        const responseJson = await userList.json();
 
-    validateSchema(await responseJson, userSchemaFull);
-  });
+        expect(userList.status()).toBe(200);
 
-  test("Should return first page if page value is in the wrong format", async ({ request }) => {
-    const userList = await request.get(USER_MANAGEMENT_PATH, {
-      params: {
-        'page':'abc'
-      }
+        expect(responseJson.data).toEqual([]);
+
+        validateSchema(await responseJson, userSchemaFull);
     });
-    const responseJson = await userList.json();
-    
-    expect(userList.status()).toBe(200);
 
-    expect(responseJson.page).toBe(1);
-    validateSchema(await responseJson, userSchemaFull);
-  });
+    test('Should return first page if page value is in the wrong format', async ({
+        request,
+    }) => {
+        const userList = await request.get(USER_MANAGEMENT_PATH, {
+            params: {
+                page: 'abc',
+            },
+        });
+        const responseJson = await userList.json();
 
-  test("Should return the specified amount of results per page", async ({ request }) => {
-    const userList = await request.get(USER_MANAGEMENT_PATH, {
-      params: {
-        'per_page': 4
-      }
+        expect(userList.status()).toBe(200);
+
+        expect(responseJson.page).toBe(1);
+        validateSchema(await responseJson, userSchemaFull);
     });
-    const responseJson = await userList.json();
-    
-    expect(userList.status()).toBe(200);
 
-    expect(responseJson.per_page).toBe(4);
+    test('Should return the specified amount of results per page', async ({
+        request,
+    }) => {
+        const userList = await request.get(USER_MANAGEMENT_PATH, {
+            params: {
+                per_page: 4,
+            },
+        });
+        const responseJson = await userList.json();
 
-    expect(responseJson.data.length).toBe(4);
-    validateSchema(await responseJson, userSchemaFull);
-  });
+        expect(userList.status()).toBe(200);
 
-  test("Should return first page if per page value is in the wrong format", async ({ request }) => {
-     const userList = await request.get(USER_MANAGEMENT_PATH, {
-      params: {
-        'per_page': 'fasfjlks'
-      }
+        expect(responseJson.per_page).toBe(4);
+
+        expect(responseJson.data.length).toBe(4);
+        validateSchema(await responseJson, userSchemaFull);
     });
-    const responseJson = await userList.json();
-    
-    expect(userList.status()).toBe(200);
-    expect(responseJson.page).toBe(1);
-    validateSchema(await responseJson, userSchemaFull);
-  });
 
+    test('Should return first page if per page value is in the wrong format', async ({
+        request,
+    }) => {
+        const userList = await request.get(USER_MANAGEMENT_PATH, {
+            params: {
+                per_page: 'fasfjlks',
+            },
+        });
+        const responseJson = await userList.json();
+
+        expect(userList.status()).toBe(200);
+        expect(responseJson.page).toBe(1);
+        validateSchema(await responseJson, userSchemaFull);
+    });
 });

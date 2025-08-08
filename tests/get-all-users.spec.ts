@@ -1,8 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { validateSchema } from "../helpers/validateSchema";
 import { USER_MANAGEMENT_PATH } from "../helpers/apiLocations";
-
-const schema = require("../schemas/userSchemaFull.json");
+import { userSchemaFull } from "../schemas/userSchemaFull";
 
 test.describe('Get all users (GET)', () => {
   test("Should return successfully", async ({ request }) => {
@@ -13,7 +12,7 @@ test.describe('Get all users (GET)', () => {
 
     expect(userList.status()).toBe(200);
 
-    validateSchema(await userList.json(), schema);
+    validateSchema(await userList.json(), userSchemaFull);
 
     expect(responseTime).toBeLessThanOrEqual(1000);
   });
@@ -31,7 +30,7 @@ test.describe('Get all users (GET)', () => {
     expect(userList.status()).toBe(200);
     expect(responseJson.page).toBe(2);
 
-    validateSchema(await responseJson, schema);
+    validateSchema(await responseJson, userSchemaFull);
     expect(responseTime).toBeLessThanOrEqual(1000);
   });
 
@@ -47,7 +46,7 @@ test.describe('Get all users (GET)', () => {
 
     expect(responseJson.data).toEqual([]);
 
-    validateSchema(await responseJson, schema);
+    validateSchema(await responseJson, userSchemaFull);
   });
 
   test("Should return first page if page value is in the wrong format", async ({ request }) => {
@@ -61,7 +60,7 @@ test.describe('Get all users (GET)', () => {
     expect(userList.status()).toBe(200);
 
     expect(responseJson.page).toBe(1);
-    validateSchema(await responseJson, schema);
+    validateSchema(await responseJson, userSchemaFull);
   });
 
   test("Should return the specified amount of results per page", async ({ request }) => {
@@ -77,7 +76,7 @@ test.describe('Get all users (GET)', () => {
     expect(responseJson.per_page).toBe(4);
 
     expect(responseJson.data.length).toBe(4);
-    validateSchema(await responseJson, schema);
+    validateSchema(await responseJson, userSchemaFull);
   });
 
   test("Should return first page if per page value is in the wrong format", async ({ request }) => {
@@ -90,7 +89,7 @@ test.describe('Get all users (GET)', () => {
     
     expect(userList.status()).toBe(200);
     expect(responseJson.page).toBe(1);
-    validateSchema(await responseJson, schema);
+    validateSchema(await responseJson, userSchemaFull);
   });
 
 });

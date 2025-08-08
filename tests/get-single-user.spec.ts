@@ -1,8 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { validateSchema } from "../helpers/validateSchema";
 import { USER_MANAGEMENT_PATH } from "../helpers/apiLocations";
-
-const schema = require("../schemas/userSchemaSingle.json");
+import { userSchemaSingle } from "../schemas/userSchemaSingle";
 
 test.describe('Get single user (GET)', () => {
   test("Should return successfully", async ({ request }) => {
@@ -20,7 +19,7 @@ test.describe('Get single user (GET)', () => {
     expect(responseJson.data.first_name).toBe("Emma");
     expect(responseJson.data.last_name).toBe("Wong");
     expect(responseJson.data.avatar).toBe(`https://reqres.in/img/faces/${id}-image.jpg`);
-    validateSchema(responseJson, schema);
+    validateSchema(responseJson, userSchemaSingle);
   });
 
  test("Should fail if user ID is not found", async ({ request }) => {

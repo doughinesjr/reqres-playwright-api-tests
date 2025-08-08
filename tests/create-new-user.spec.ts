@@ -1,8 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { validateSchema } from "../helpers/validateSchema";
 import { USER_MANAGEMENT_PATH } from "../helpers/apiLocations";
-
-const schema = require("../schemas/createUserResponse.json");
+import { createUserResponseSchema } from "../schemas/createUserResponse";
 
 test.describe('Create new user (POST)', () => {
   test("Should return acknowledgement successfully", async ({ request }) => {
@@ -17,13 +16,11 @@ test.describe('Create new user (POST)', () => {
     
     const responseTime = Date.now() - startTime;
     const responseJson = await response.json();
-    console.log(responseJson);
-    console.log('Request URL:', response.url());
 
     expect(response.status()).toBe(201);
     expect(responseTime).toBeLessThanOrEqual(1000);
     expect(responseJson.email).toBe(emailAddress);
-    validateSchema(responseJson, schema);
+    validateSchema(responseJson, createUserResponseSchema);
   });
 
 
@@ -67,7 +64,7 @@ test.describe('Create new user (POST)', () => {
 
     expect(response.status()).toBe(201);
     expect(responseJson.email).toBe(emailAddress);
-    validateSchema(responseJson, schema);
+    validateSchema(responseJson, createUserResponseSchema);
   });
 
   test("Verify user has been created (via GET)", async ({ request }) => {
@@ -85,9 +82,9 @@ test.describe('Create new user (POST)', () => {
     expect(response.status()).toBe(201);
     expect(responseTime).toBeLessThanOrEqual(1000);
     expect(responseJson.email).toBe(emailAddress);
-    validateSchema(responseJson, schema);
+    validateSchema(responseJson, createUserResponseSchema);
 
-    // Verify User has been created
+    // Verify User has been created (via GET)
 
     const responseFromGet = await request.get(USER_MANAGEMENT_PATH, {
       params: {

@@ -1,4 +1,7 @@
-{
+import { JSONSchemaType } from "ajv";
+import { GetUserResponseSingle } from "../types/user";
+
+export const userSchemaSingle: JSONSchemaType<GetUserResponseSingle> = {
   "type": "object",
   "properties": {
     "data": {

@@ -1,4 +1,7 @@
-{
+import { JSONSchemaType } from "ajv";
+import { CreateUserResponse } from "../types/user";
+
+export const createUserResponseSchema: JSONSchemaType<CreateUserResponse> = {
   "type": "object",
   "properties": {
     "email": {

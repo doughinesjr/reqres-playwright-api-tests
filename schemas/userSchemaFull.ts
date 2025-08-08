@@ -1,4 +1,7 @@
-{
+import { JSONSchemaType } from "ajv";
+import { GetUserResponseFull } from "../types/user";
+
+export const userSchemaFull: JSONSchemaType<GetUserResponseFull> = {
   "type": "object",
   "properties": {
     "page": { "type": "integer" },

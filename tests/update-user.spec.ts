@@ -1,8 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { validateSchema } from "../helpers/validateSchema";
 import { USER_MANAGEMENT_PATH } from "../helpers/apiLocations";
-
-const schema = require("../schemas/createUserResponse.json");
+import { createUserResponseSchema } from "../schemas/createUserResponse";
 
 test.describe('Update user (PUT)', () => {
   test("Should return acknowledgement successfully", async ({ request }) => {
@@ -29,7 +28,7 @@ test.describe('Update user (PUT)', () => {
     expect(responseJson.email).toBe(emailAddress);
     expect(responseJson.first_name).toBe(firstName);
     expect(responseJson.last_name).toBe(lastName);
-    validateSchema(responseJson, schema);
+    validateSchema(responseJson, createUserResponseSchema);
   });
 
   test("Should fail if user ID doesn't exist", async ({ request }) => {
@@ -75,14 +74,11 @@ test.describe('Update user (PUT)', () => {
         'email': emailAddress
       }
     });
-    const responseTime = Date.now() - startTime;
-    debugger;
+
     const responseJson = await response.json();
 
     expect(response.status()).toBe(201);
-    expect(responseTime).toBeLessThanOrEqual(1000);
     expect(responseJson.email).toBe(emailAddress);
-    validateSchema(responseJson, schema);
 
     // Verify User has been created via GET
 

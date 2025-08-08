@@ -31,9 +31,7 @@ test.describe('Update user (PUT)', () => {
     validateSchema(responseJson, schema);
   });
 
-
-  // Skipping because API call always passes
-  test.skip("Should fail if user ID doesn't exist", async ({ request }) => {
+  test("Should fail if user ID doesn't exist", async ({ request }) => {
 
     const response = await request.put(`/api/users/58585858`, {
       data: {
@@ -47,16 +45,32 @@ test.describe('Update user (PUT)', () => {
 
   test.skip("Should fail if invalid JSON format", async ({ request }) => {});
 
-  test.skip("Should fail if missing required fields", async ({ request }) => {});
+  test("Should fail if missing required fields", async ({ request }) => {
+    const response = await request.put(`/api/users/3`, {
+      data: {}
+    });
 
-  test.skip("Should pass if additional fields are passed", async ({ request }) => {});
+    expect(response.status()).toBe(400);
+  });
 
-  test.skip("Verify user has been created (via GET)", async ({ request }) => {
+  test("Should pass if additional fields are passed", async ({ request }) => {
+    const response = await request.put(`/api/users/3`, {
+      data: {
+        'email': 'test@test.com',
+        'first_name': 'newFirstName',
+        'additional_field': 'additional field 1'
+      }
+    });
+
+    expect(response.status()).toBe(200);
+  });
+
+  test("Verify user has been created (via GET)", async ({ request }) => {
     const emailAddress = 'automationTest@gmail.com';
     const startTime = Date.now();
 
     const response = await request.post(`/api/users/`, {
-      params: {
+      data: {
         'email': emailAddress
       }
     });
@@ -69,7 +83,7 @@ test.describe('Update user (PUT)', () => {
     expect(responseJson.email).toBe(emailAddress);
     validateSchema(responseJson, schema);
 
-    // Verify User has been created
+    // Verify User has been created via GET
 
     const responseFromGet = await request.get(`/api/users/`, {
       params: {
@@ -89,6 +103,5 @@ test.describe('Update user (PUT)', () => {
     }
 
     expect(found).toBe(true);
-
   });
 });

@@ -12,14 +12,14 @@ test.describe('Delete user (DELETE)', () => {
     expect(responseTime).toBeLessThanOrEqual(1000);
   });
 
-  test.skip("Should fail if user ID doesn't exist", async ({ request }) => {
+  test("Should fail if user ID doesn't exist", async ({ request }) => {
 
     const response = await request.delete(`/api/users/58585858`);
 
     expect(response.status()).toBe(404);
   });
 
-  test.skip("Should fail if deleting user twice", async ({ request }) => {
+  test("Should fail if deleting user twice", async ({ request }) => {
 
     const id = 4;
     const response = await request.delete(`/api/users/${4}`);
@@ -32,20 +32,23 @@ test.describe('Delete user (DELETE)', () => {
 
   });
 
-  test.skip("Should fail if invalid JSON format", async ({ request }) => {});
+  test("Should fail if missing required fields (No ID included)", async ({ request }) => {
 
-  test.skip("Should fail if missing required fields", async ({ request }) => {});
+    // Send request with no ID
+    const response = await request.delete(`/api/users/`); 
+    
+    expect(response.status()).toBe(404);
+  });
 
-  test.skip("Verify user has been deleted (via GET)", async ({ request }) => {
+  test("Verify user has been deleted (via GET)", async ({ request }) => {
     const emailAddress = 'automationTest@gmail.com';
-    const startTime = Date.now();
     const id = 3;
 
     const response = await request.delete(`/api/users/${id}`);
 
     expect(response.status()).toBe(204);
 
-    // Verify User has been deleted
+    // Verify User has been deleted (via GET users endpoint);
 
     const responseFromGet = await request.get(`/api/users/`, {
       params: {

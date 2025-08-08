@@ -30,7 +30,7 @@ test.describe('Get all users (GET)', () => {
     expect(userList.status()).toBe(200);
     expect(responseJson.page).toBe(2);
 
-    // validateSchema(await responseJson, schema);
+    validateSchema(await responseJson, schema);
     expect(responseTime).toBeLessThanOrEqual(1000);
   });
 
@@ -46,7 +46,7 @@ test.describe('Get all users (GET)', () => {
 
     expect(responseJson.data).toEqual([]);
 
-    // validateSchema(await responseJson, schema);
+    validateSchema(await responseJson, schema);
   });
 
   test("Should return first page if page value is in the wrong format", async ({ request }) => {
@@ -60,7 +60,7 @@ test.describe('Get all users (GET)', () => {
     expect(userList.status()).toBe(200);
 
     expect(responseJson.page).toBe(1);
-    // validateSchema(await responseJson, schema);
+    validateSchema(await responseJson, schema);
   });
 
   test("Should return the specified amount of results per page", async ({ request }) => {
@@ -76,9 +76,20 @@ test.describe('Get all users (GET)', () => {
     expect(responseJson.per_page).toBe(4);
 
     expect(responseJson.data.length).toBe(4);
-    // validateSchema(await responseJson, schema);
+    validateSchema(await responseJson, schema);
   });
 
-  test.skip("Should return first page if per page value is in the wrong format", async ({ request }) => {});
+  test("Should return first page if per page value is in the wrong format", async ({ request }) => {
+     const userList = await request.get("/api/users", {
+      params: {
+        'per_page': 'fasfjlks'
+      }
+    });
+    const responseJson = await userList.json();
+    
+    expect(userList.status()).toBe(200);
+    expect(responseJson.page).toBe(1);
+    validateSchema(await responseJson, schema);
+  });
 
 });

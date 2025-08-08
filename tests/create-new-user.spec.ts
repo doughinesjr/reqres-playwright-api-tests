@@ -41,23 +41,44 @@ test.describe('Create new user (POST)', () => {
     expect(response.status()).toBe(403);
   });
 
-  test.skip("Should fail if invalid JSON format", async ({ request }) => {});
+  test("Should fail if invalid JSON format", async ({ request }) => {
+
+    const response = await request.post(`/api/users/`, {
+      data: "kdsljflsdaklfjksaf"
+    });
+
+    expect(response.status()).toBe(400);
+  });
 
   test.skip("Should fail if missing required fields", async ({ request }) => {});
 
-  test.skip("Should pass if additional fields are passed", async ({ request }) => {});
+  test("Should pass if additional fields are passed", async ({ request }) => {
+    const emailAddress = "automationTest@gmail.com";
 
-  test.skip("Verify user has been created (via GET)", async ({ request }) => {
+    const response = await request.post(`/api/users/`, {
+      data: {
+        'email': emailAddress,
+        'additionalField1': 'additional value 1'
+      }
+    });
+    
+    const responseJson = await response.json();
+
+    expect(response.status()).toBe(201);
+    expect(responseJson.email).toBe(emailAddress);
+    validateSchema(responseJson, schema);
+  });
+
+  test("Verify user has been created (via GET)", async ({ request }) => {
     const emailAddress = 'automationTest@gmail.com';
     const startTime = Date.now();
 
     const response = await request.post(`/api/users/`, {
-      params: {
+      data: {
         'email': emailAddress
       }
     });
     const responseTime = Date.now() - startTime;
-    debugger;
     const responseJson = await response.json();
 
     expect(response.status()).toBe(201);
